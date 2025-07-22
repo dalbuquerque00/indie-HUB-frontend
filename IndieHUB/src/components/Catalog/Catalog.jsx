@@ -1,26 +1,29 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import GameCard from "../GameCard/GameCard";
-import mockGames from "../data/mockGames";
 import "./Catalog.css";
 import { Link } from "react-router-dom";
+import { fetchIndieGames } from "../../utils/rawgApi";
 
 function Catalog() {
+  const [games, setGames] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [search, setSearch] = useState("");
-  const [genreFilter, setGenreFilter] = useState("Todos");
 
-  const genres = useMemo(() => [
-    "Todos",
-    ...Array.from(new Set(mockGames.map((game) => game.genre)))
-  ], []);
+  useEffect(() => {
+    setLoading(true);
+    fetchIndieGames()
+      .then(data => setGames(data.results))
+      .catch(err => setError("Erro ao carregar jogos"))
+      .finally(() => setLoading(false));
+  }, []);
 
-  const filteredGames = mockGames.filter((game) => {
+  const filteredGames = games.filter(game => {
     const lower = search.toLowerCase();
-    const matchesSearch =
-      game.title.toLowerCase().includes(lower) ||
-      (game.genre && game.genre.toLowerCase().includes(lower)) ||
-      (game.author && game.author.toLowerCase().includes(lower));
-    const matchesGenre = genreFilter === "Todos" || game.genre === genreFilter;
-    return matchesSearch && matchesGenre;
+    return (
+      game.name.toLowerCase().includes(lower) ||
+      (game.genres && game.genres.some(g => g.name.toLowerCase().includes(lower)))
+    );
   });
 
   return (
@@ -46,26 +49,18 @@ function Catalog() {
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-        <select
-          className="catalog-genre-filter"
-          value={genreFilter}
-          onChange={e => setGenreFilter(e.target.value)}
-        >
-          {genres.map(genre => (
-            <option value={genre} key={genre}>{genre}</option>
-          ))}
-        </select>
       </div>
 
       <div className="catalog-grid">
-        {filteredGames.length === 0 ? (
+        {loading ? (
+          <div className="catalog-empty">Carregando jogos...</div>
+        ) : error ? (
+          <div className="catalog-empty">{error}</div>
+        ) : filteredGames.length === 0 ? (
           <div className="catalog-empty">Nenhum jogo encontrado.</div>
         ) : (
           filteredGames.map((game) => (
-            <Link
-              key={game.id}
-              to={`/games/${game.id}`}
-            >
+            <Link key={game.id} to={`/games/${game.id}`}>
               <GameCard game={game} />
             </Link>
           ))
