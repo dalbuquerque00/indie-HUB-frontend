@@ -1,0 +1,148 @@
+.register-container {
+  max-width: 350px;
+  margin: 3rem auto 0;
+  background: #181825;
+  border-radius: 14px;
+  box-shadow: 0 4px 30px #0000001a;
+  padding: 2.5rem 2rem 2rem;
+}
+
+.register-title {
+  font-size: 1.35rem;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-weight: 700;
+}
+
+.register-form label {
+  color: #8be9fd;
+  font-size: 1.06rem;
+  margin-top: 1rem;
+  font-weight: 500;
+  display: block;
+}
+
+.register-form input {
+  width: 100%;
+  padding: 0.7rem;
+  margin: 0.25rem 0 0.7rem 0;
+  border-radius: 7px;
+  border: 1.5px solid #444;
+  background: #232344;
+  color: #f8f8f2;
+  font-size: 1rem;
+  outline: none;
+  transition: border 0.2s;
+}
+.register-form input:focus {
+  border: 1.5px solid #8be9fd;
+}
+
+.register-btn {
+  margin-top: 1.2rem;
+  width: 100%;
+  background: linear-gradient(90deg, #8be9fd 70%, #bd93f9 100%);
+  color: #22223b;
+  font-weight: 700;
+  font-size: 1.08rem;
+  padding: 0.75rem 0;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background .15s;
+}
+.register-btn:hover {
+  background: linear-gradient(90deg, #bd93f9 70%, #8be9fd 100%);
+}
+
+.register-error {
+  color: #ff5555;
+  font-size: 0.99rem;
+  margin-top: -0.4rem;
+  margin-bottom: 0.6rem;
+}
+
+.register-success {
+  background: #dbf7e7;
+  color: #299765;
+  padding: 0.8rem;
+  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 1.1rem;
+  font-size: 1.04rem;
+  border: 1.5px solid #54deab4a;
+  animation: successpop 0.3s;
+}
+
+@keyframes successpop {
+  0% { transform: scale(0.92);}
+  100% { transform: scale(1);}
+}
+
+.register-link-msg {
+  margin-top: 1.7rem;
+  color: #aaa;
+  text-align: center;
+}
+
+.register-link {
+  color: #8be9fd;
+  font-weight: 600;
+  margin-left: 0.3rem;
+  text-decoration: none;
+  transition: text-decoration 0.2s, color 0.2s;
+}
+.register-link:hover {
+  text-decoration: underline;
+  color: #bd93f9;
+}
+@media (max-width: 480px) {
+  .register-container {
+    max-width: 99vw;
+    padding: 1.3rem 0.6rem 1.1rem 0.6rem;
+    margin: 2.2rem 0 0 0;
+    border-radius: 8px;
+  }
+  .register-title {
+    font-size: 1.12rem;
+  }
+  .register-form input {
+    font-size: 0.99rem;
+    padding: 0.65rem;
+    border-radius: 5px;
+  }
+  .register-btn {
+    font-size: 0.97rem;
+    padding: 0.68rem 0;
+    border-radius: 6px;
+  }
+}
+
+@media (max-width: 520px) {
+  .submit-game-container {
+    max-width: 98vw;
+    padding: 1.3rem 0.5rem 1rem 0.5rem;
+    border-radius: 10px;
+  }
+  .submit-game-title {
+    font-size: 1.2rem;
+    padding: 0 0.1em;
+    word-break: break-word;
+  }
+  .submit-game-form label {
+    font-size: 0.98rem;
+  }
+  .submit-game-form input,
+  .submit-game-form textarea,
+  .submit-game-form select {
+    font-size: 0.98rem;
+    padding: 0.65rem 0.8rem;
+    border-radius: 7px;
+  }
+  .submit-game-btn {
+    font-size: 0.99rem;
+    padding: 0.7rem 0;
+    border-radius: 7px;
+  }
+}

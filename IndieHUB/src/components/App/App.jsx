@@ -1,27 +1,43 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import Catalog from "./pages/Catalog";        
-import GameDetails from "./pages/GameDetails";
-import SubmitGame from "./pages/SubmitGame";  
-import Profile from "./pages/Profile";       
-import Login from "./pages/Login";             
-import Register from "./pages/Register";       
-import Navbar from "./components/Navbar.jsx";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useState } from 'react';
+import Navbar from '../Navigation/Navbar';
+import ModalWithForm from '../ModalWithForm/ModalWithForm';
+import Login from '../Login/Login';
+import Register from '../Register/Register';
+import Footer from '../Footer/Footer';
+import Main from '../Main/Main';
+import Home from '../Home/Home';
+import About from '../About/About';
+import Profile from '../Profile/Profile';
+import Catalog from '../Catalog/Catalog';
+import GameDetails from '../GameDetails/GameDetails';
 
 function App() {
+  const [modalOpen, setModalOpen] = useState(null);
+
   return (
-    <BrowserRouter>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/catalog" element={<Catalog />} />
-        <Route path="/games/:id" element={<GameDetails />} />
-        <Route path="/submit" element={<SubmitGame />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-      </Routes>
-    </BrowserRouter>
+    <Router>
+      <Navbar
+        onLoginClick={() => setModalOpen("login")}
+        onRegisterClick={() => setModalOpen("register")}
+      />
+      <ModalWithForm isOpen={modalOpen === "login"} onClose={() => setModalOpen(null)}>
+        <Login />
+      </ModalWithForm>
+      <ModalWithForm isOpen={modalOpen === "register"} onClose={() => setModalOpen(null)}>
+        <Register />
+      </ModalWithForm>
+      <Main>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/catalog" element={<Catalog />} />
+          <Route path="/gamedetails" element={<GameDetails />} />
+        </Routes>
+      </Main>
+      <Footer />
+    </Router>
   );
 }
 
