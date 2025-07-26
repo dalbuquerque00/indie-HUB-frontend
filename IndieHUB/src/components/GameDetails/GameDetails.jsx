@@ -1,35 +1,70 @@
-import { useState } from "react";
+const apiKey = import.meta.env.VITE_RAWG_API_KEY;
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import mockGames from "../data/mockGames";
 import "./GameDetails.css";
 
-// Ícones SVG externos temporarios
-const iconLinks = {
-  steam: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/steam.svg",
-  itch: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/itchdotio.svg",
-  website: "https://cdn-icons-png.flaticon.com/512/159/159604.png"
+import androidIcon from '../../assets/icons/android-icon.svg';
+import appleIcon from '../../assets/icons/apple-icon.svg';
+import iosIcon from '../../assets/icons/ios-icon.svg';
+import linuxIcon from '../../assets/icons/linux-icon.svg';
+import playstationIcon from '../../assets/icons/playstation-icon.svg';
+import steamIcon from '../../assets/icons/steam-icon.svg';
+import xboxIcon from '../../assets/icons/xbox-icon.svg';
+import nintendoIcon from '../../assets/icons/nintendo-logo.svg';
+
+import { useFavorites } from "../../utils/useFavorites";
+
+
+const platformIcons = {
+  pc: steamIcon,
+  mac: appleIcon,
+  linux: linuxIcon,
+  ios: iosIcon,
+  android: androidIcon,
+  playstation: playstationIcon,
+  playstation4: playstationIcon,
+  playstation5: playstationIcon,
+  xbox: xboxIcon,
+  xbox360: xboxIcon,
+  xbox_one: xboxIcon,
+  xbox_series_x: xboxIcon,
+  nintendo: nintendoIcon,
+  nintendo_switch: nintendoIcon
 };
 
 function GameDetails() {
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
   const { id } = useParams();
-  const game = mockGames.find(g => String(g.id) === id);
-
-  const [favorites, setFavorites] = useState([]);
+  const { isFavorite, addFavorite, removeFavorite } = useFavorites();
+  const [game, setGame] = useState(null);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  if (!game) return <div>Jogo não encontrado.</div>;
+  useEffect(() => {
+    setLoading(true);
+    setError(null);
+    fetch(`https://api.rawg.io/api/games/${id}?key=${apiKey}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setGame(data);
+        setLoading(false);
+      })
+      .catch(() => {
+        setError("Não foi possível carregar o jogo.");
+        setLoading(false);
+      });
+  }, [id]);
 
-  const isFavorite = favorites.includes(game.id);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]);
 
-  const toggleFavorite = () => {
-    if (isFavorite) {
-      setFavorites(favorites.filter(favId => favId !== game.id));
-    } else {
-      setFavorites([...favorites, game.id]);
-    }
-  };
+  if (loading) return <div>Carregando...</div>;
+  if (error || !game || game.detail === "Not found.") return <div>Jogo não encontrado.</div>;
+
 
   const handleStarClick = (num) => {
     if (!submitted) {
@@ -50,44 +85,69 @@ function GameDetails() {
   return (
     <div className="game-details-main">
       <div className="game-details-header">
-        <img src={game.cover} alt={game.title} className="game-details-img" />
+        <img src={game.background_image} alt={game.name} className="game-details-img" />
         <div className="game-details-info">
-          <h2>{game.title}</h2>
+          <h2>{game.name}</h2>
           <div className="game-details-meta">
-            <span className="game-details-year">{game.year}</span>
+            <span className="game-details-year">{game.released?.split("-")[0]}</span>
             <span className="game-details-rating">⭐ {game.rating}</span>
           </div>
           <div className="game-details-genres">
             {game.genres?.map((genre, idx) => (
-              <span key={idx} className="genre-tag">{genre}</span>
+              <span key={idx} className="genre-tag">{genre.name}</span>
             ))}
           </div>
-          <div className="game-details-links">
-            {game.steam && (
-              <a href={game.steam} target="_blank" rel="noopener noreferrer" title="Steam">
-                <img src={iconLinks.steam} alt="Steam" className="details-icon" />
-              </a>
-            )}
-            {game.itch && (
-              <a href={game.itch} target="_blank" rel="noopener noreferrer" title="Itch.io">
-                <img src={iconLinks.itch} alt="Itch.io" className="details-icon" />
-              </a>
-            )}
-            {game.website && (
-              <a href={game.website} target="_blank" rel="noopener noreferrer" title="Site oficial">
-                <img src={iconLinks.website} alt="Site" className="details-icon" />
-              </a>
-            )}
+          <div className="game-details-platforms">
+            {game.platforms?.map((p, idx) => {
+              const slug = p.platform.slug;
+              const iconSrc =
+                platformIcons[slug] ||
+                (slug.startsWith("playstation") ? playstationIcon :
+                 slug.startsWith("xbox") ? xboxIcon :
+                 slug.startsWith("nintendo") ? nintendoIcon :
+                 null);
+              return iconSrc ? (
+                <img
+                  key={slug + idx}
+                  src={iconSrc}
+                  alt={p.platform.name}
+                  title={p.platform.name}
+                  className="platform-icon"
+                />
+              ) : null;
+            })}
           </div>
+          
         </div>
       </div>
       <div className="game-details-description">
         <h3>Descrição</h3>
-        <p>{game.description}</p>
+        <p>{game.description_raw || "Sem descrição."}</p>
       </div>
       <div className="game-details-actions">
-        <button className={`favorite-btn${isFavorite ? " active" : ""}`} onClick={toggleFavorite}>
-          {isFavorite ? "Remover dos Favoritos" : "Adicionar aos Favoritos"}
+        <button
+          className={`favorite-btn${isFavorite(game.id) ? " active" : ""}`}
+          onClick={() => {
+            if (!currentUser) {
+              alert("Você precisa estar logado para adicionar aos favoritos!");
+              
+              return;
+            }
+            if (isFavorite(game.id)) {
+              removeFavorite(game.id);
+            } else {
+              addFavorite({
+                id: game.id,
+                name: game.name,
+                background_image: game.background_image
+              });
+            }
+          }}
+          title={isFavorite(game.id) ? "Remover dos favoritos" : "Adicionar aos favoritos"}
+          aria-label={isFavorite(game.id) ? "Remover dos favoritos" : "Adicionar aos favoritos"}
+          type="button"
+        >
+          {isFavorite(game.id) ? "★ Remover dos Favoritos" : "☆ Adicionar aos Favoritos"}
         </button>
         <div className="rating-section">
           <label className="rating-label">Avalie este jogo:</label>

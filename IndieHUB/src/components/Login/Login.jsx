@@ -9,7 +9,7 @@ function validate({ email, password }) {
   return errors;
 }
 
-function Login() {
+function Login({ onLoginSuccess, onSwitchToRegister }) {
   const [form, setForm] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState(false);
@@ -27,12 +27,20 @@ function Login() {
     setErrors(validation);
 
     if (Object.keys(validation).length === 0) {
-      // Aqui vai a requisição para o backend futuramente
-      // Simulação de login
-      if (form.email === "teste@email.com" && form.password === "123456") {
+      // Teste com login simulado usando localStorage.
+      // Busca os usuários cadastrados no localStorage
+      const users = JSON.parse(localStorage.getItem("users")) || [];
+      const user = users.find(u => u.email === form.email && u.password === form.password);
+      if (user) {
         setSuccess(true);
-        setTimeout(() => setSuccess(false), 2000);
-        setForm({ email: "", password: "" });
+        localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("currentUser", JSON.stringify(user));
+        setTimeout(() => {
+          setSuccess(false);
+          setForm({ email: "", password: "" });
+          if (onLoginSuccess) onLoginSuccess();
+          window.dispatchEvent(new CustomEvent("loginSuccess"));
+        }, 1000);
       } else {
         setApiError("E-mail ou senha incorretos");
       }
@@ -78,7 +86,7 @@ function Login() {
       </form>
       <p className="login-link-msg">
         Não tem uma conta?
-        <a className="login-link" href="/register"> Cadastre-se</a>
+        <span className="login-link" onClick={onSwitchToRegister}> Cadastre-se</span>
       </p>
     </div>
   );

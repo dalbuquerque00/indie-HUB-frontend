@@ -2,19 +2,21 @@ import React, { useState, useEffect } from "react";
 import GameCard from "../GameCard/GameCard";
 import "./Catalog.css";
 import { Link } from "react-router-dom";
-import { fetchIndieGames } from "../../utils/rawgApi";
+import { fetchManyIndieGames } from "../../utils/rawgApi";
 
 function Catalog() {
   const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [search, setSearch] = useState("");
+  const [visible, setVisible] = useState(9);
 
+  // Teste frontend: buscar 120 jogos indies pelo menos
   useEffect(() => {
     setLoading(true);
-    fetchIndieGames()
-      .then(data => setGames(data.results))
-      .catch(err => setError("Erro ao carregar jogos"))
+    fetchManyIndieGames(120)
+      .then(gamesArr => setGames(gamesArr))
+      .catch(() => setError("Erro ao carregar jogos"))
       .finally(() => setLoading(false));
   }, []);
 
@@ -30,7 +32,7 @@ function Catalog() {
     <div className="catalog-container">
       <h1 className="catalog-title">Catálogo de Jogos Indies</h1>
       <p className="catalog-subtitle">
-        Descubra, avalie e compartilhe os melhores jogos indies!
+        Descubra, avalie os melhores jogos indies!
       </p>
 
       <div className="catalog-filter-row">
@@ -59,13 +61,20 @@ function Catalog() {
         ) : filteredGames.length === 0 ? (
           <div className="catalog-empty">Nenhum jogo encontrado.</div>
         ) : (
-          filteredGames.map((game) => (
+          filteredGames.slice(0, visible).map((game) => (
             <Link key={game.id} to={`/games/${game.id}`}>
               <GameCard game={game} />
             </Link>
           ))
         )}
       </div>
+      {!loading && !error && filteredGames.length > visible && (
+        <div className="catalog-show-more-row">
+          <button className="catalog-show-more-btn" onClick={() => setVisible(visible + 9)}>
+            Mostrar mais
+          </button>
+        </div>
+      )}
     </div>
   );
 }

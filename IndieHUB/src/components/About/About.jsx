@@ -8,7 +8,7 @@ function About() {
       <section>
         <h3>O Projeto</h3>
         <p>
-          <strong>indieHub</strong> é uma plataforma desenvolvida para explorar, avaliar, favoritar e compartilhar jogos indie! O objetivo é conectar fãs e criadores, ajudando a divulgar a cena independente de games e tornar mais fácil descobrir pérolas do universo indie.
+          <strong>indieHub</strong> é uma plataforma desenvolvida para explorar, avaliar, favoritar jogos indie! O objetivo é conectar fãs e criadores, ajudando a divulgar a cena independente de games e tornar mais fácil descobrir pérolas do universo indie.
         </p>
       </section>
 
@@ -19,9 +19,9 @@ function About() {
         </p>
         <ul style={{ listStyle: 'none', padding: 0, margin: '0.5em 0 0 0' }}>
           <li style={{display: 'flex', alignItems: 'center', gap: '0.5em'}}>
-            <a href="https://github.com/seuusuario" target="_blank" rel="noopener noreferrer" style={{display: 'inline-flex', alignItems: 'center', gap: '0.2em'}}>
+            <a href="https://github.com/dalbuquerque00" target="_blank" rel="noopener noreferrer" style={{display: 'inline-flex', alignItems: 'center', gap: '0.2em'}}>
               <img src={githubLogo} alt="GitHub" style={{width: '20px', height: '20px', marginRight: '0.2em'}} />
-              github.com/seuusuario
+              github.com/dalbuquerque00
             </a>
           </li>
         </ul>
@@ -52,7 +52,7 @@ function About() {
         <h3>Contato</h3>
         <p>
           Ficou com dúvida, sugestão ou quer colaborar? Fique à vontade para me chamar pelo <a href="mailto:danilo@email.com">email</a> ou pelo{' '}
-          <a href="https://github.com/seuusuario" target="_blank" rel="noopener noreferrer" style={{display: 'inline-flex', alignItems: 'center', gap: '0.2em'}}>
+          <a href="https://github.com/dalbuquerque00" target="_blank" rel="noopener noreferrer" style={{display: 'inline-flex', alignItems: 'center', gap: '0.2em'}}>
             <img src={githubLogo} alt="GitHub" style={{width: '18px', height: '18px', marginRight: '0.22em'}} />
             GitHub
           </a>!

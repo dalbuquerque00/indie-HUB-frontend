@@ -11,7 +11,7 @@ function validate({ name, email, password }) {
   return errors;
 }
 
-function Register() {
+function Register({ onSwitchToLogin }) {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState(false);
@@ -29,11 +29,24 @@ function Register() {
     setErrors(validation);
 
     if (Object.keys(validation).length === 0) {
-      // Aqui você pode fazer a requisição para backend de cadastro
-      // Simulação de cadastro:
+      // bloco para obter usuários existentes do localStorage
+      const users = JSON.parse(localStorage.getItem("users")) || [];
+
+      // Bloco para verificar se já existe um usuário com o mesmo email
+      const userExists = users.some(user => user.email === form.email);
+      if (userExists) {
+        setApiError("E-mail já cadastrado");
+        return;
+      }
+      
+      users.push({ name: form.name, email: form.email, password: form.password });
+
+      localStorage.setItem("users", JSON.stringify(users));
+
       setSuccess(true);
       setTimeout(() => setSuccess(false), 2500);
       setForm({ name: "", email: "", password: "" });
+      setApiError("");
     }
   }
 
@@ -89,7 +102,16 @@ function Register() {
 
       <p className="register-link-msg">
         Já possui conta?
-        <Link className="register-link" to="/login"> Entrar</Link>
+        <span
+          className="register-link"
+          style={{ cursor: "pointer", color: "#82eaff", marginLeft: "6px" }}
+          onClick={onSwitchToLogin}
+          tabIndex={0}
+          role="button"
+          onKeyDown={e => { if (e.key === "Enter") onSwitchToLogin(); }}
+        >
+          Entrar
+        </span>
       </p>
     </div>
   );

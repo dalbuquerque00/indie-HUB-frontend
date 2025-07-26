@@ -9,7 +9,7 @@ function Home() {
     <div className="home-main">
       <h1 className="home-title">Bem-vindo ao IndieHub!</h1>
       <p className="home-desc">
-        Descubra, avalie e compartilhe os melhores jogos indies do momento. Explore o catálogo, conheça novos desenvolvedores, e faça parte da comunidade apaixonada por jogos criativos e independentes!
+        Descubra, avalie os melhores jogos indies do momento. Explore o catálogo, conheça novos desenvolvedores, e faça parte da comunidade apaixonada por jogos criativos e independentes!
       </p>
       <button className="home-btn" onClick={() => navigate("/catalog")}>
         Explorar Catálogo

@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../Navigation/Navbar';
 import ModalWithForm from '../ModalWithForm/ModalWithForm';
 import Login from '../Login/Login';
@@ -15,6 +15,22 @@ import GameDetails from '../GameDetails/GameDetails';
 function App() {
   const [modalOpen, setModalOpen] = useState(null);
 
+  useEffect(() => {
+    function handleOpenLogin() {
+      setModalOpen("login");
+    }
+    window.addEventListener("openLoginModal", handleOpenLogin);
+    return () => window.removeEventListener("openLoginModal", handleOpenLogin);
+  }, []);
+
+  useEffect(() => {
+    function handleLoginSuccess() {
+      setModalOpen(null);
+    }
+    window.addEventListener("loginSuccess", handleLoginSuccess);
+    return () => window.removeEventListener("loginSuccess", handleLoginSuccess);
+  }, []);
+
   return (
     <Router>
       <Navbar
@@ -22,10 +38,15 @@ function App() {
         onRegisterClick={() => setModalOpen("register")}
       />
       <ModalWithForm isOpen={modalOpen === "login"} onClose={() => setModalOpen(null)}>
-        <Login />
+        <Login 
+          onLoginSuccess={() => setModalOpen(null)}
+          onSwitchToRegister={() => setModalOpen("register")}
+        />
       </ModalWithForm>
       <ModalWithForm isOpen={modalOpen === "register"} onClose={() => setModalOpen(null)}>
-        <Register />
+        <Register 
+          onSwitchToLogin={() => setModalOpen("login")}
+        />
       </ModalWithForm>
       <Main>
         <Routes>
@@ -33,7 +54,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/catalog" element={<Catalog />} />
-          <Route path="/gamedetails" element={<GameDetails />} />
+          <Route path="/games/:id" element={<GameDetails />} />
         </Routes>
       </Main>
       <Footer />

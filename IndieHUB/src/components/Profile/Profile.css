@@ -1,4 +1,4 @@
-/* Profile.css */
+
 .profile-container {
   min-height: 100vh;
   display: flex;
@@ -34,7 +34,7 @@
 }
 .avatar-edit-btn {
   position: absolute;
-  bottom: 0;
+  bottom: 2px;
   right: 120px;
   background: #292c36;
   border-radius: 50%;
@@ -48,6 +48,8 @@
   font-size: 1.3rem;
   border: 2px solid #49e4fa;
   transition: background 0.2s;
+  z-index: 2;
+  box-shadow: 0 2px 8px #0005;
 }
 .avatar-edit-btn:hover {
   background: #2eb4c8;
@@ -226,9 +228,10 @@
 .profile-favorites-section {
   background: rgba(36, 36, 70, 0.96);
   border-radius: 14px;
-  margin: 36px auto 0 auto;
-  padding: 22px 22px 18px 22px;
-  max-width: 660px;
+  margin: 16px auto 0 auto;
+  padding: 16px;
+  max-width: 700px;
+  width: 100%;
   box-shadow: 0 3px 20px #0003;
   text-align: left;
 }
@@ -237,15 +240,17 @@
   color: #ffe359;
   font-size: 1.20rem;
   margin-bottom: 1.1rem;
+  text-align: center;
   font-family: inherit;
 }
 
 .profile-favorites-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 18px;
-  margin-top: 10px;
-  justify-content: flex-start;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(140px, 1fr));
+  gap: 16px;
+  margin-top: 8px;
+  justify-items: center;
+  width: 100%;
 }
 
 .profile-favorite-card {
@@ -261,16 +266,9 @@
   max-width: 160px;
   padding: 15px 10px 11px 10px;
   transition: transform 0.13s, box-shadow 0.18s, background 0.14s;
-  cursor: pointer;
   border: 2px solid transparent;
 }
-.profile-favorite-card:hover, .profile-favorite-card:focus {
-  background: #292942;
-  border: 2px solid #ffe359;
-  transform: translateY(-2px) scale(1.045);
-  box-shadow: 0 6px 18px #ffe35933;
-  color: #ffe359;
-}
+
 
 .profile-favorite-img {
   width: 88px;
@@ -308,7 +306,8 @@
     padding: 10px 2vw 10px 2vw;
   }
   .profile-favorites-list {
-    gap: 10px;
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
   .profile-favorite-card {
     min-width: 88px;
@@ -319,4 +318,94 @@
     width: 60px;
     height: 60px;
   }
+}
+
+@media (max-width: 950px) {
+  .profile-favorites-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+/* user nao logado */
+.profile-not-logged {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  background: rgba(36, 36, 70, 0.96);
+  border-radius: 16px;
+  box-shadow: 0 3px 20px #0003;
+  padding: 32px 20px;
+  max-width: 440px;
+  margin: 48px auto 0 auto;
+  text-align: center;
+}
+
+.profile-not-logged h2 {
+  color: #49e4fa;
+  margin-bottom: 18px;
+  font-size: 1.35rem;
+  font-family: 'Press Start 2P', 'Courier New', Courier, monospace;
+}
+
+.profile-not-logged p {
+  color: #ffe359;
+  font-size: 1.07rem;
+  margin-bottom: 8px;
+}
+
+.profile-not-logged a {
+  margin-top: 12px;
+  background: linear-gradient(90deg, #49e4fa 60%, #ffe359 100%);
+  color: #23242a;
+  padding: 7px 18px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  font-family: inherit;
+  transition: background 0.2s;
+}
+.profile-not-logged a:hover {
+  background: linear-gradient(90deg, #ffe359 10%, #49e4fa 90%);
+  color: #23242a;
+}
+.profile-login-btn {
+  margin-top: 12px;
+  background: linear-gradient(90deg, #49e4fa 60%, #ffe359 100%);
+  color: #23242a;
+  padding: 7px 18px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  font-family: inherit;
+  font-size: 1.07rem;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  box-shadow: 0 2px 12px #0002;
+}
+
+.profile-login-btn:hover {
+  background: linear-gradient(90deg, #ffe359 10%, #49e4fa 90%);
+  color: #23242a;
+}
+.profile-logout-btn {
+  margin-top: 20px;
+  background: linear-gradient(90deg, #49e4fa 60%, #ffe359 100%);
+  color: #23242a;
+  padding: 9px 26px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  font-family: inherit;
+  font-size: 1.07rem;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  box-shadow: 0 2px 12px #0002;
+  display: inline-block;
+}
+.profile-logout-btn:hover {
+  background: linear-gradient(90deg, #ffe359 10%, #49e4fa 90%);
+  color: #23242a;
 }
