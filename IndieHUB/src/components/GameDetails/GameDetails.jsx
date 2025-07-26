@@ -1,4 +1,4 @@
-const apiKey = import.meta.env.VITE_RAWG_API_KEY;
+const apiKey = import.meta.env.VITE_API_KEY;
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "./GameDetails.css";

@@ -210,7 +210,6 @@
   color: #49e4fa;
 }
 
-/* Responsivo */
 @media (max-width: 600px) {
   .profile-container {
     padding-top: 22px;
@@ -222,9 +221,17 @@
     min-width: 96vw;
     padding: 1.1rem 0.3rem;
   }
+  .avatar-edit-btn {
+  position: absolute;
+  bottom: 2px;
+  right: 85px;
+  background: #292c36;
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+}
 }
 
-/* Favoritos do Perfil */
 .profile-favorites-section {
   background: rgba(36, 36, 70, 0.96);
   border-radius: 14px;

@@ -118,22 +118,51 @@
   .navbar {
     flex-direction: column;
     align-items: flex-start;
-    padding: 14px 10px;
+    padding: 9px 5px;
     min-height: unset;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
   }
   .navbar-left {
-    gap: 10px;
-    margin-bottom: 10px;
+    gap: 5px;
+    margin-bottom: 5px;
+  }
+  .navbar-logo {
+    font-size: 1.4rem;
+    margin-right: 14px;
+    letter-spacing: 1px;
+    text-shadow: 0 0 6px #00e7ff88, 0 1px 0 #333;
+  }
+  .navbar a {
+    font-size: 0.93rem;
+    padding: 2.5px 0;
+    border-radius: 2px;
   }
   .navbar-right {
     flex-direction: column;
     align-items: stretch;
     width: 100%;
-    gap: 8px;
+    gap: 6px;
   }
   .navbar-btn,
   .navbar-btn-register {
     width: 100%;
     margin-left: 0;
+    font-size: 0.97rem;
+    padding: 8px 0;
+    border-radius: 7px;
+  }
+}
+
+@media (max-width: 420px) {
+  .navbar-logo {
+    font-size: 1.08rem;
+    margin-right: 8px;
+  }
+  .navbar {
+    padding: 6px 3px;
+  }
+  .navbar-right {
+    gap: 4px;
   }
 }
